@@ -44,7 +44,7 @@ public final class AttributeTest
     this.events = new ArrayList<String>();
     this.errors = 0;
 
-    this.attributes = new Attributes(throwable -> {
+    this.attributes = Attributes.create(throwable -> {
       LOG.error("error: ", throwable);
       ++this.errors;
     });

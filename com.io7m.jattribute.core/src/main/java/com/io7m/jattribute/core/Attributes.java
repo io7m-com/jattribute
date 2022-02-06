@@ -37,11 +37,26 @@ public final class Attributes
    *                        by subscribers of attributes.
    */
 
-  public Attributes(
+  private Attributes(
     final Consumer<Throwable> inErrorConsumer)
   {
     this.errorConsumer =
       Objects.requireNonNull(inErrorConsumer, "errorConsumer");
+  }
+
+  /**
+   * Construct a new attributes class.
+   *
+   * @param inErrorConsumer A function that will receive any exceptions raised
+   *                        by subscribers of attributes.
+   *
+   * @return A new attributes class
+   */
+
+  public static Attributes create(
+    final Consumer<Throwable> inErrorConsumer)
+  {
+    return new Attributes(inErrorConsumer);
   }
 
   /**

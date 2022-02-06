@@ -16,6 +16,8 @@
 
 package com.io7m.jattribute.core;
 
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.function.Function;
 
 /**
@@ -27,9 +29,14 @@ import java.util.function.Function;
  * must be closed when no longer required. Subscriptions are strong references,
  * and so are capable of preventing attributes from being garbage collected.
  *
+ * Attributes are thread-safe and can be read from and written to by any
+ * number of threads. Care should be taken to avoid updating an attribute
+ * from a subscriber of that attribute; the result will be an infinite loop.
+ *
  * @param <A> The type of values
  */
 
+@ThreadSafe
 public interface AttributeReadableType<A>
 {
   /**

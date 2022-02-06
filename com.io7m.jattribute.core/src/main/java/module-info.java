@@ -22,6 +22,7 @@ module com.io7m.jattribute.core
 {
   requires static org.osgi.annotation.bundle;
   requires static org.osgi.annotation.versioning;
+  requires static com.io7m.jcip.annotations;
 
   exports com.io7m.jattribute.core;
 }

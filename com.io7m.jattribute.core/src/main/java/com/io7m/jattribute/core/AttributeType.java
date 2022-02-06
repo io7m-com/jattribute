@@ -16,6 +16,8 @@
 
 package com.io7m.jattribute.core;
 
+import net.jcip.annotations.ThreadSafe;
+
 import java.util.function.Function;
 
 /**
@@ -24,6 +26,7 @@ import java.util.function.Function;
  * @see AttributeReadableType
  */
 
+@ThreadSafe
 public interface AttributeType<A> extends AttributeReadableType<A>
 {
   /**

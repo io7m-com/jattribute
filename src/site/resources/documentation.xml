@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<div xmlns="http://www.w3.org/1999/xhtml">
+  <h3>Usage</h3>
+  <p>Create an instance of the <code>Attributes</code> class to create new attributes. The class takes a function as an
+    argument that will receive exceptions raised by subscribers.
+  </p>
+  <pre>
+    <code>var attributes = Attributes.create(e -&gt; LOG.error(&quot;exception raised: &quot;, e));
+    </code>
+  </pre>
+  <h4>Creating Attributes</h4>
+  <p>Use the <code>attributes</code> instance to create new attribute values. The values held in an attribute <em>
+    should
+  </em> be of an immutable class. This is not strictly required, but the purpose of attributes is ostensibly to
+    communicate state updates to consumers, and mutating a value held in an attribute will <em>not</em> cause
+    subscribers to be notified that anything has changed.
+  </p>
+  <p>The following code creates an integer-typed attribute initialized with a value of <code>23</code>:
+  </p>
+  <pre>
+    <code>var ival = attributes.create(23);
+    </code>
+  </pre>
+  <p>Attributes implement the <code>AttributeType</code> interface, which allows for both reading and writing values. <code>
+    AttributeType
+  </code> is a subtype of <code>AttributeReadableType</code>, which is a read-only interface. Code that should not be
+    allowed to write to an attribute can be passed the attribute as a value of type
+    <code>AttributeReadableType</code>.
+  </p>
+  <p>Attributes are thread-safe and can be written to and read from any number of threads.</p>
+  <h4>Subscribing To Attributes</h4>
+  <p>Consumers can subscribe to state updates. Subscribing to an attribute creates a <em>subscription</em> that must be
+    closed when no longer needed. Subscriptions create strong references, and so can prevent attributes from being
+    garbage collected. It's important to be aware of this in applications that are frequently creating and discarding
+    attributes.
+  </p>
+  <pre>
+    <code>var sub = ival.subscribe((oldValue, newValue) -&gt; { ... });
+    </code>
+  </pre>
+  <p>Subscriptions implement <code>AutoCloseable</code> and can therefore be used with
+    <code>try-with-resources</code>:
+  </p>
+  <pre>
+    <code>try (var sub = ival.subscribe((oldValue, newValue) -&gt; { ... })) { ... }
+    </code>
+  </pre>
+  <p>If a subscriber raises an exception on receipt of a state update, the subscriber's subscription is automatically
+    closed. The exception raised will be delivered to the function passed to the <code>Attributes</code> class above.
+    The rationale for this is that the client that modified the attribute should not receive an exception if one of the
+    subscribers failed to handle the state update properly, and none of the other subscribers should be subjected to the
+    errors of one failing subscriber. The failing subscriber failed to handle the exception, and we don't want to just
+    discard the exception silently.
+  </p>
+  <p>Subscriber functions are called on the same thread that updated the attribute.</p>
+  <h4>Updating Attributes</h4>
+  <p>Use the <code>set</code> method to update the value held in an attribute.
+  </p>
+  <pre>
+    <code>ival.set(25);
+    </code>
+  </pre>
+  <p>All subscribers to <code>ival</code> will be notified immediately that the value has changed from <code>23</code> to <code>
+    25</code>.
+  </p>
+  <h4>Transforming Attributes</h4>
+  <p>Attributes are functors, and so the <code>map</code> method (<code>mapR</code> for read-only attributes) can be
+    used to produce a new attribute <code>K</code> that will transform values from an existing attribute <code>M</code> each
+    time <code>M</code> is updated.
+  </p>
+  <pre>
+    <code>var dval = ival.map(i -&gt; (double) i);
+    </code>
+  </pre>
+  <p>Each time <code>ival</code> is updated, the subscribers of <code>dval</code> will see the transformed value in
+    state updates. Subscribers of <code>ival</code> are <em>not</em> automatically subscribed to <code>dval</code>;
+    conceptually, it is an entirely new and distinct attribute.
+  </p>
+</div>
