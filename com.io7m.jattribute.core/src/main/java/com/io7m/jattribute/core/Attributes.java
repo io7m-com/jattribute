@@ -18,9 +18,11 @@
 package com.io7m.jattribute.core;
 
 import com.io7m.jattribute.core.internal.Attribute;
+import com.io7m.jattribute.core.internal.AttributeFunction;
 
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * A class for constructing attributes.
@@ -68,9 +70,25 @@ public final class Attributes
    * @return A new attribute
    */
 
-  public <A> AttributeType<A> create(
+  public <A> AttributeType<A> withValue(
     final A initial)
   {
     return new Attribute<>(this.errorConsumer, initial);
+  }
+
+  /**
+   * Create a new attribute that evaluates the given function to retrieve
+   * values.
+   *
+   * @param f   The evaluated function
+   * @param <A> The type of attributes
+   *
+   * @return A new attribute
+   */
+
+  public <A> AttributeType<A> fromFunction(
+    final Supplier<A> f)
+  {
+    return new AttributeFunction<>(this.errorConsumer, f);
   }
 }
