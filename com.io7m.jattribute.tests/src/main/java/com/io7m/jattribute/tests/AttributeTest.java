@@ -58,7 +58,43 @@ public final class AttributeTest
   public void testAttributeBasic()
   {
     final var attr0 =
-      this.attributes.create(23);
+      this.attributes.withValue(23);
+
+    final var sub0 =
+      attr0.subscribe((oldValue, newValue) -> {
+        this.events.add("attr0 s0 " + oldValue + " " + newValue);
+      });
+
+    final var sub1 =
+      attr0.subscribe((oldValue, newValue) -> {
+        this.events.add("attr0 s1 " + oldValue + " " + newValue);
+      });
+
+    attr0.set(25);
+    attr0.set(26);
+    sub1.close();
+    attr0.set(27);
+
+    assertEquals("attr0 s0 23 23", this.events.remove(0));
+    assertEquals("attr0 s1 23 23", this.events.remove(0));
+    assertEquals("attr0 s0 23 25", this.events.remove(0));
+    assertEquals("attr0 s1 23 25", this.events.remove(0));
+    assertEquals("attr0 s0 25 26", this.events.remove(0));
+    assertEquals("attr0 s1 25 26", this.events.remove(0));
+    assertEquals("attr0 s0 26 27", this.events.remove(0));
+    assertEquals(0, this.events.size());
+    assertEquals(0, this.errors);
+  }
+
+  /**
+   * Subscribing to a function attribute works.
+   */
+
+  @Test
+  public void testAttributeFunction()
+  {
+    final var attr0 =
+      this.attributes.withValue(23);
 
     final var sub0 =
       attr0.subscribe((oldValue, newValue) -> {
@@ -94,7 +130,7 @@ public final class AttributeTest
   public void testAttributeMapped()
   {
     final var attr0 =
-      this.attributes.create(23);
+      this.attributes.withValue(23);
     final var attr1 =
       attr0.map(i -> Double.valueOf(i.doubleValue()));
 
@@ -128,7 +164,7 @@ public final class AttributeTest
   public void testAttributeMappedR()
   {
     final var attr0 =
-      this.attributes.create(23);
+      this.attributes.withValue(23);
     final var attr1 =
       attr0.mapR(i -> Double.valueOf(i.doubleValue()));
 
@@ -162,7 +198,7 @@ public final class AttributeTest
   public void testAttributeMapHeavy()
   {
     final var attr0 =
-      this.attributes.create(23);
+      this.attributes.withValue(23);
     final var attr1 =
       attr0.map(i -> i.doubleValue())
         .map(i -> i * i)
@@ -196,7 +232,7 @@ public final class AttributeTest
   public void testConsumerCrashes()
   {
     final var attr0 =
-      this.attributes.create(23);
+      this.attributes.withValue(23);
 
     final var sub0 =
       attr0.subscribe((oldValue, newValue) -> {
@@ -224,7 +260,7 @@ public final class AttributeTest
   public void testConsumerCrashesLate()
   {
     final var attr0 =
-      this.attributes.create(23);
+      this.attributes.withValue(23);
 
     final var sub0 =
       attr0.subscribe((oldValue, newValue) -> {
