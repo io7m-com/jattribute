@@ -89,7 +89,9 @@ abstract class AttributeAbstract<A>
   {
     for (final var subscriber : this.subscribers) {
       try {
-        subscriber.receiver.receive(oldValue, newValue);
+        if (!subscriber.isClosed()) {
+          subscriber.receiver.receive(oldValue, newValue);
+        }
       } catch (final Throwable e) {
         this.consumeException(subscriber, e);
       }
