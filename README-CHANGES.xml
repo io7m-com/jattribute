@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <c:changelog project="com.io7m.jattribute" xmlns:c="urn:com.io7m.changelog:4.0">
   <c:releases>
-    <c:release date="2024-05-10T21:55:54+00:00" is-open="false" ticket-system="com.github.io7m.jattribute" version="1.0.0">
+    <c:release date="2024-05-10T00:00:00+00:00" is-open="false" ticket-system="com.github.io7m.jattribute" version="1.0.0">
       <c:changes>
         <c:change date="2024-05-10T00:00:00+00:00" summary="Initial public release."/>
+      </c:changes>
+    </c:release>
+    <c:release date="2024-09-06T20:41:56+00:00" is-open="false" ticket-system="com.github.io7m.jattribute" version="1.0.1">
+      <c:changes>
+        <c:change date="2024-05-24T00:00:00+00:00" summary="Update jqwik.version:1.8.4 → 1.8.5."/>
+        <c:change date="2024-06-28T00:00:00+00:00" summary="Update junit.version:5.10.2 → 5.10.3."/>
+        <c:change date="2024-06-28T00:00:00+00:00" summary="Update jqwik.version:1.8.5 → 1.9.0."/>
+        <c:change date="2024-08-07T00:00:00+00:00" summary="Update org.slf4j:slf4j-api:2.0.13 → 2.0.14."/>
+        <c:change date="2024-08-09T00:00:00+00:00" summary="Update org.slf4j:slf4j-api:2.0.14 → 2.0.15."/>
+        <c:change date="2024-08-12T00:00:00+00:00" summary="Update org.slf4j:slf4j-api:2.0.15 → 2.0.16."/>
+        <c:change date="2024-08-14T00:00:00+00:00" summary="Update junit.version:5.10.3 → 5.11.0."/>
+        <c:change date="2024-08-16T00:00:00+00:00" summary="Update ch.qos.logback:logback-classic:1.5.6 → 1.5.7."/>
       </c:changes>
     </c:release>
   </c:releases>
